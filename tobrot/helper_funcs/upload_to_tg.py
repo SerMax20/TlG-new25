@@ -88,7 +88,7 @@ async def upload_to_tg(
             i_m_s_g = await message.reply_text(
                 "Telegram does not support uploading this file.\n"
                 f"Detected File Size: {d_f_s} 😡\n"
-                "\n🤖 trying to split the files 🌝🌝🌚"
+                "\n⏰ trying to split the files 🌝🌚"
             )
             splitted_dir = await split_large_files(local_file_name)
             totlaa_sleif = os.listdir(splitted_dir)
@@ -136,7 +136,7 @@ async def upload_to_gdrive(file_upload, message):
         indexurl = f"{INDEX_LINK}/{file_upload}"
         g_link = requote_uri(indexurl)
         time.sleep(4)
-        await message.edit_text(f'{file_upload} has been Uploaded successfully to your cloud 🤒\n\n Index Url: <a href="{g_link}">here</a>')
+        await message.edit_text(f'{file_upload} has been Uploaded successfully to your cloud 🤒\n\n 👉 Direct link (Shareable)➤➤➤: <a href="{g_link}">here</a>')
         os.remove(file_upload)
     else:
         tt= os.path.join(destination, file_upload)
@@ -147,7 +147,7 @@ async def upload_to_gdrive(file_upload, message):
         indexurl = f"{INDEX_LINK}/{file_upload}/"
         g_link = requote_uri(indexurl)
         time.sleep(4)
-        await message.edit_text(f'Folder has been Uploaded successfully to {tt} in your cloud 🤒\n\n Index Url: <a href="{g_link}">here</a>')
+        await message.edit_text(f'Folder has been Uploaded successfully to {tt} in your cloud 🤒\n\n 👉 Direct link (Shareable)➤➤➤ : <a href="{g_link}">here</a>')
         shutil.rmtree(file_upload)
 
 #
@@ -313,7 +313,7 @@ async def upload_single_file(message, local_file_name, caption_str, from_user, e
                     os.path.dirname(os.path.abspath(local_file_name))
                 )
             # if a file, don't upload "thumb"
-            # this "diff" is a major derp -_- 😔😭😭
+            # this "diff" is a major derp -_- 😭😔😭
             thumb = None
             if thumb_image_path is not None and os.path.isfile(thumb_image_path):
                 thumb = thumb_image_path
