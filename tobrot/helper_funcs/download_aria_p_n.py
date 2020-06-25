@@ -81,7 +81,7 @@ def add_magnet(aria_instance, magnetic_link, c_file_name):
             options=options
         )
     except Exception as e:
-        return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Read /help"
+        return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Read /Pinned Massage"
     else:
         return True, "" + download.gid + ""
 
@@ -99,7 +99,7 @@ def add_torrent(aria_instance, torrent_file_path):
                 position=None
             )
         except Exception as e:
-            return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Read /help"
+            return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Pinned Massage"
         else:
             return True, "" + download.gid + ""
     else:
@@ -120,7 +120,7 @@ def add_url(aria_instance, text_url, c_file_name):
             options=options
         )
     except Exception as e:
-        return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Read /help"
+        return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Pinned Massage"
     else:
         return True, "" + download.gid + ""
 
@@ -222,7 +222,7 @@ async def call_apropriate_function(
         message_id = final_response[key_f_res_se]
         channel_id = str(AUTH_CHANNEL)[4:]
         private_link = f"https://t.me/c/{channel_id}/{message_id}"
-        message_to_send += "👉 <a href='"
+        message_to_send += "📌 <a href='"
         message_to_send += private_link
         message_to_send += "'>"
         message_to_send += local_file_name
@@ -233,7 +233,7 @@ async def call_apropriate_function(
         message_to_send = mention_req_user + message_to_send
         message_to_send = message_to_send + "\n\n" + "#uploads"
     else:
-        message_to_send = "<i>FAILED</i> to upload files. 😞😞"
+        message_to_send = "<i>FAILED</i> to upload files.📤😔"
     await sent_message_to_update_tg_p.reply_to_message.reply_text(
         text=message_to_send,
         quote=True,
@@ -384,7 +384,7 @@ async def call_apropriate_function_t(
         message_id = final_response[key_f_res_se]
         channel_id = str(AUTH_CHANNEL)[4:]
         private_link = f"https://t.me/c/{channel_id}/{message_id}"
-        message_to_send += "👉 <a href='"
+        message_to_send += "📌 <a href='"
         message_to_send += private_link
         message_to_send += "'>"
         message_to_send += local_file_name
@@ -395,7 +395,7 @@ async def call_apropriate_function_t(
         message_to_send = mention_req_user + message_to_send
         message_to_send = message_to_send + "\n\n" + "#uploads"
     else:
-        message_to_send = "<i>FAILED</i> to upload files. 😞😞"
+        message_to_send = "<i>FAILED</i> to upload files.📤😔"
     await sent_message_to_update_tg_p.reply_to_message.reply_text(
         text=message_to_send,
         quote=True,
@@ -426,7 +426,7 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
                     pass
                 #
                 msg = f"\nDownloading File: `{downloading_dir_name}`"
-                msg += f"\nSpeed: {file.download_speed_string()} 🔽 / {file.upload_speed_string()} 🔼"
+                msg += f"\nSpeed: {file.download_speed_string()} 📥 / {file.upload_speed_string()} 📤"
                 msg += f"\nProgress: {file.progress_string()}"
                 msg += f"\nTotal Size: {file.total_length_string()}"
 
