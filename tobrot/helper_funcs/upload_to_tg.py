@@ -13,6 +13,7 @@ LOGGER = logging.getLogger(__name__)
 
 import asyncio
 import os
+import re
 import time
 import subprocess
 import shutil
@@ -121,7 +122,8 @@ async def upload_to_tg(
                 dict_contatining_uploaded_files[os.path.basename(local_file_name)] = sent_message.message_id
     # await message.delete()
     return dict_contatining_uploaded_files
-#
+
+#(c)gautamajay52
 
 async def upload_to_gdrive(file_upload, message):
     subprocess.Popen(('touch', 'rclone.conf'), stdout = subprocess.PIPE)
@@ -131,24 +133,50 @@ async def upload_to_gdrive(file_upload, message):
     destination = f'{DESTINATION_FOLDER}'
     if os.path.isfile(file_upload):
         tmp = subprocess.Popen(['rclone', 'copy', '--config=rclone.conf', f'{file_upload}', 'DRIVE:'f'{destination}', '-v'], stdout = subprocess.PIPE)
-        out = tmp.communicate()
-        print(out)
+        pro, cess = tmp.communicate()
+        with open('filter.txt', 'w+') as filter:
+            print(f"+ {file_upload}\n- *", file=filter)
+        process1 = subprocess.Popen(['rclone', 'lsf', '--config=rclone.conf', '-F', 'i', "--filter-from=filter.txt", "--files-only", 'DRIVE:'f'{destination}'], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        popi, popp = process1.communicate()
+        print(popi)
+        p = popi.decode("utf-8")
+        print(p)
+        #os.remove("filter.txt")
+        gauti = f"https://drive.google.com/file/d/{p}/view?usp=drivesdk"
+        gau_link = gau_link = re.search("(?P<url>https?://[^\s]+)", gauti).group("url")
+        print(gau_link)
         indexurl = f"{INDEX_LINK}/{file_upload}"
-        g_link = requote_uri(indexurl)
-        time.sleep(4)
-        await message.edit_text(f'{file_upload} has been Uploaded successfully to your cloud 🤒\n\n 👉 Direct link (Shareable)➤➤➤: <a href="{g_link}">here</a>')
+        tam_link = requote_uri(indexurl)
+        #s_tr = '-'*40
+        await asyncio.sleep(3)
+        await message.edit_text(f"""🤖: {file_upload} Uploaded 📤 successfully to your cloud 🤒\n\n👉 ☁️ Cloud URL ➤➤➤:  <a href="{gau_link}">FileLink</a>\n 📡 (Shareable) Index Url ➤➤➤:  <a href="{tam_link}">IndexLink</a>""")
         os.remove(file_upload)
+        #os.remove(filter.txt)
     else:
         tt= os.path.join(destination, file_upload)
         print(tt)
         tmp = subprocess.Popen(['rclone', 'copy', '--config=rclone.conf', f'{file_upload}', 'DRIVE:'f'{tt}', '-v'], stdout = subprocess.PIPE)
-        out = tmp.communicate()
-        print(out)
+        pro, cess = tmp.communicate()
+        print(pro)
+        with open('filter1.txt', 'w+') as filter1:
+            print(f"+ {file_upload}/\n- *", file=filter1)
+        process12 = subprocess.Popen(['rclone', 'lsf', '--config=rclone.conf', '-F', 'i', "--filter-from=filter1.txt", "--dirs-only", 'DRIVE:'f'{destination}'], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        #os.remove("filter1.txt")
+        popie, popp = process12.communicate()
+        print(popie)
+        p = popie.decode("utf-8")
+        print(p)
+        #os.remove("filter1.txt")
+        gautii = f"https://drive.google.com/folderview?id={p}"
+        gau_link = re.search("(?P<url>https?://[^\s]+)", gautii).group("url")
+        print(gau_link)
         indexurl = f"{INDEX_LINK}/{file_upload}/"
-        g_link = requote_uri(indexurl)
-        time.sleep(4)
-        await message.edit_text(f'Folder has been Uploaded successfully to {tt} in your cloud 🤒\n\n 👉 Direct link (Shareable)➤➤➤ : <a href="{g_link}">here</a>')
+        tam_link = requote_uri(indexurl)
+        #s_tr = '-'*40
+        await asyncio.sleep(3)
+        await message.edit_text(f"""🤖: File Uploaded 📤 successfully to {tt} in your cloud 🤒\n\n👉 ☁️ Cloud URL ➤➤➤:  <a href="{gau_link}">FolderLink</a>\n 📡 (Shareable) Index Url ➤➤➤:. <a href="{tam_link}">IndexLink</a>""")
         shutil.rmtree(file_upload)
+        #os.remove(filter1.txt)
 
 #
 
@@ -313,7 +341,7 @@ async def upload_single_file(message, local_file_name, caption_str, from_user, e
                     os.path.dirname(os.path.abspath(local_file_name))
                 )
             # if a file, don't upload "thumb"
-            # this "diff" is a major derp -_- 😭😔😭
+            # this "diff" is a major derp -_- 😭
             thumb = None
             if thumb_image_path is not None and os.path.isfile(thumb_image_path):
                 thumb = thumb_image_path
@@ -340,7 +368,7 @@ async def upload_single_file(message, local_file_name, caption_str, from_user, e
                     reply_to_message_id=message.reply_to_message.message_id,
                     progress=progress_for_pyrogram,
                     progress_args=(
-                        "trying to upload",
+                        "📥trying to upload",
                         message_for_progress_display,
                         start_time
                     )
